@@ -1,19 +1,19 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // Screens
-import HomeScreen from './src/screens/HomeScreen';
-import UploadPhotoScreen from './src/screens/UploadPhotoScreen';
-import WriteDescriptionScreen from './src/screens/WriteDescriptionScreen';
-import SelectPlatformsScreen from './src/screens/SelectPlatformsScreen';
-import PreviewScreen from './src/screens/PreviewScreen';
-import ResultsScreen from './src/screens/ResultsScreen';
+import HomeScreen from "./src/screens/HomeScreen";
+import UploadPhotoScreen from "./src/screens/UploadPhotoScreen";
+import WriteDescriptionScreen from "./src/screens/WriteDescriptionScreen";
+import SelectPlatformsScreen from "./src/screens/SelectPlatformsScreen";
+import PreviewScreen from "./src/screens/PreviewScreen";
+import ResultsScreen from "./src/screens/ResultsScreen";
 
 // Context
-import { AppProvider } from './src/context/AppContext';
+import { AppProvider } from "./src/context/AppContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,15 +27,15 @@ export default function App() {
             screenOptions={{
               headerShown: true,
               headerStyle: {
-                backgroundColor: '#6366f1',
+                backgroundColor: "#34C759",
               },
-              headerTintColor: '#ffffff',
+              headerTintColor: "#ffffff",
               headerTitleStyle: {
-                fontWeight: '700',
+                fontWeight: "700",
                 fontSize: 18,
               },
               cardStyle: {
-                backgroundColor: '#f9fafb',
+                backgroundColor: "#f9fafb",
               },
             }}
           >
@@ -50,39 +50,39 @@ export default function App() {
               name="UploadPhoto"
               component={UploadPhotoScreen}
               options={{
-                title: '📸 Upload Photo',
-                headerBackTitle: 'Back',
+                title: "📸 Upload Photo",
+                headerBackTitle: "Back",
               }}
             />
             <Stack.Screen
               name="WriteDescription"
               component={WriteDescriptionScreen}
               options={{
-                title: '✍️ Write Description',
-                headerBackTitle: 'Back',
+                title: "✍️ Write Description",
+                headerBackTitle: "Back",
               }}
             />
             <Stack.Screen
               name="SelectPlatforms"
               component={SelectPlatformsScreen}
               options={{
-                title: '🎯 Select Platforms',
-                headerBackTitle: 'Back',
+                title: "🎯 Select Platforms",
+                headerBackTitle: "Back",
               }}
             />
             <Stack.Screen
               name="Preview"
               component={PreviewScreen}
               options={{
-                title: '👁️ Preview',
-                headerBackTitle: 'Back',
+                title: "👁️ Preview",
+                headerBackTitle: "Back",
               }}
             />
             <Stack.Screen
               name="Results"
               component={ResultsScreen}
               options={{
-                title: '📊 Results',
+                title: "📊 Results",
                 headerLeft: null,
               }}
             />

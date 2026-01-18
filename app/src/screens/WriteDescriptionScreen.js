@@ -2,7 +2,7 @@
  * Write Description Screen
  */
 
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,10 +13,10 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { AppContext } from '../context/AppContext';
-import { PrimaryButton, SecondaryButton } from '../components';
-import ApiService from '../services/ApiService';
+} from "react-native";
+import { AppContext } from "../context/AppContext";
+import { PrimaryButton, SecondaryButton } from "../components";
+import ApiService from "../services/ApiService";
 
 export default function WriteDescriptionScreen({ navigation }) {
   const { description, setDescription } = useContext(AppContext);
@@ -34,30 +34,31 @@ export default function WriteDescriptionScreen({ navigation }) {
 
   const handleContinue = async () => {
     if (!localDescription.trim()) {
-      Alert.alert('Error', 'Please write a description');
+      Alert.alert("Error", "Please write a description");
       return;
     }
 
     if (localDescription.length > MAX_CHARS) {
-      Alert.alert('Error', `Description is too long. Maximum: ${MAX_CHARS} characters`);
+      Alert.alert(
+        "Error",
+        `Description is too long. Maximum: ${MAX_CHARS} characters`,
+      );
       return;
     }
 
     try {
-      // Validate description with server
-      await ApiService.validateDescription(localDescription);
       setDescription(localDescription);
-      navigation.navigate('SelectPlatforms');
+      navigation.navigate("SelectPlatforms");
     } catch (error) {
-      Alert.alert('Error', error.message || 'Failed to validate description');
+      Alert.alert("Error", error.message || "Failed to validate description");
     }
   };
 
   const getCharCountColor = () => {
     const percentage = charCount / MAX_CHARS;
-    if (percentage < 0.8) return '#6b7280';
-    if (percentage < 0.95) return '#f59e0b';
-    return '#ef4444';
+    if (percentage < 0.8) return "#6b7280";
+    if (percentage < 0.95) return "#f59e0b";
+    return "#ef4444";
   };
 
   const handleInsertTemplate = (template) => {
@@ -67,17 +68,23 @@ export default function WriteDescriptionScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.content}>
             {/* Instruction */}
             <View style={styles.instructionCard}>
               <Text style={styles.instructionIcon}>✍️</Text>
-              <Text style={styles.instructionTitle}>Write Your Description</Text>
+              <Text style={styles.instructionTitle}>
+                Write Your Description
+              </Text>
               <Text style={styles.instructionText}>
-                Share your thoughts! Content will be automatically adapted for each platform.
+                Share your thoughts! Content will be automatically adapted for
+                each platform.
               </Text>
             </View>
 
@@ -100,7 +107,9 @@ export default function WriteDescriptionScreen({ navigation }) {
               </Text>
               {charCount > MAX_CHARS * 0.9 && (
                 <Text style={styles.charWarning}>
-                  {charCount > MAX_CHARS ? '❌ Too long!' : '⚠️ Getting close to limit'}
+                  {charCount > MAX_CHARS
+                    ? "❌ Too long!"
+                    : "⚠️ Getting close to limit"}
                 </Text>
               )}
             </View>
@@ -117,28 +126,32 @@ export default function WriteDescriptionScreen({ navigation }) {
                   text="Product Launch 🚀"
                   onPress={() =>
                     handleInsertTemplate(
-                      '\n\n🚀 Excited to announce our new product! Swipe to see the magic.'
+                      "\n\n🚀 Excited to announce our new product! Swipe to see the magic.",
                     )
                   }
                 />
                 <TemplateButton
                   text="Event Update 🎉"
                   onPress={() =>
-                    handleInsertTemplate('\n\n🎉 Amazing things happening today! Join us! #event')
+                    handleInsertTemplate(
+                      "\n\n🎉 Amazing things happening today! Join us! #event",
+                    )
                   }
                 />
                 <TemplateButton
                   text="Content Share 📚"
                   onPress={() =>
                     handleInsertTemplate(
-                      '\n\n📚 Just discovered this gem! Check it out. #learning #growth'
+                      "\n\n📚 Just discovered this gem! Check it out. #learning #growth",
                     )
                   }
                 />
                 <TemplateButton
                   text="Tips & Tricks 💡"
                   onPress={() =>
-                    handleInsertTemplate('\n\n💡 Quick tip: This changed everything! Try it! #tips')
+                    handleInsertTemplate(
+                      "\n\n💡 Quick tip: This changed everything! Try it! #tips",
+                    )
                   }
                 />
               </ScrollView>
@@ -155,7 +168,10 @@ export default function WriteDescriptionScreen({ navigation }) {
 
             {/* Action Buttons */}
             <View style={styles.buttonContainer}>
-              <SecondaryButton title="⬅️ Back" onPress={() => navigation.goBack()} />
+              <SecondaryButton
+                title="⬅️ Back"
+                onPress={() => navigation.goBack()}
+              />
               <PrimaryButton
                 title="Next ➜"
                 onPress={handleContinue}
@@ -170,17 +186,13 @@ export default function WriteDescriptionScreen({ navigation }) {
 }
 
 const TemplateButton = ({ text, onPress }) => (
-  <PrimaryButton
-    title={text}
-    onPress={onPress}
-    style={styles.templateButton}
-  />
+  <PrimaryButton title={text} onPress={onPress} style={styles.templateButton} />
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: "#f9fafb",
   },
   scrollContent: {
     paddingHorizontal: 16,
@@ -192,11 +204,11 @@ const styles = StyleSheet.create({
 
   // Instruction Card
   instructionCard: {
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+    backgroundColor: "rgba(99, 102, 241, 0.1)",
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   instructionIcon: {
     fontSize: 32,
@@ -204,47 +216,47 @@ const styles = StyleSheet.create({
   },
   instructionTitle: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#111827',
+    fontWeight: "700",
+    color: "#111827",
     marginBottom: 6,
   },
   instructionText: {
     fontSize: 13,
-    color: '#6b7280',
-    textAlign: 'center',
+    color: "#6b7280",
+    textAlign: "center",
   },
 
   // Text Input
   descriptionInput: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
     padding: 16,
     fontSize: 16,
-    color: '#111827',
+    color: "#111827",
     minHeight: 200,
     maxHeight: 300,
     marginBottom: 12,
-    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+    fontFamily: Platform.OS === "ios" ? "System" : "Roboto",
   },
 
   // Character Count
   charCountContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 4,
     marginBottom: 20,
   },
   charCount: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   charWarning: {
     fontSize: 12,
-    color: '#f59e0b',
-    fontWeight: '600',
+    color: "#f59e0b",
+    fontWeight: "600",
   },
 
   // Templates Section
@@ -253,8 +265,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#111827',
+    fontWeight: "700",
+    color: "#111827",
     marginBottom: 12,
   },
   templateScroll: {
@@ -271,23 +283,23 @@ const styles = StyleSheet.create({
 
   // Tips Section
   tipsSection: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 8,
     padding: 16,
     marginBottom: 24,
     borderLeftWidth: 4,
-    borderLeftColor: '#10b981',
+    borderLeftColor: "#10b981",
   },
   tipText: {
     fontSize: 13,
-    color: '#6b7280',
+    color: "#6b7280",
     marginBottom: 8,
     lineHeight: 18,
   },
 
   // Buttons
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
     marginTop: 8,
   },

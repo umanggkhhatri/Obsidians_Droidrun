@@ -2,7 +2,7 @@
  * Upload Photo Screen
  */
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -13,21 +13,15 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { AppContext } from '../context/AppContext';
-import { PrimaryButton, SecondaryButton, LoadingOverlay } from '../components';
-import ApiService from '../services/ApiService';
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { AppContext } from "../context/AppContext";
+import { PrimaryButton, SecondaryButton, LoadingOverlay } from "../components";
+import ApiService from "../services/ApiService";
 
 export default function UploadPhotoScreen({ navigation }) {
-  const {
-    imageUri,
-    imageName,
-    setImage,
-    setSessionId,
-    setLoading,
-    isLoading,
-  } = useContext(AppContext);
+  const { imageUri, imageName, setImage, setSessionId, setLoading, isLoading } =
+    useContext(AppContext);
 
   const [selectedImage, setSelectedImage] = useState(imageUri);
   const [selectedImageName, setSelectedImageName] = useState(imageName);
@@ -45,10 +39,10 @@ export default function UploadPhotoScreen({ navigation }) {
       if (!result.canceled) {
         const asset = result.assets[0];
         setSelectedImage(asset.uri);
-        setSelectedImageName(asset.fileName || 'image.jpg');
+        setSelectedImageName(asset.fileName || "image.jpg");
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to pick image');
+      Alert.alert("Error", "Failed to pick image");
     }
   };
 
@@ -63,33 +57,34 @@ export default function UploadPhotoScreen({ navigation }) {
       if (!result.canceled) {
         const asset = result.assets[0];
         setSelectedImage(asset.uri);
-        setSelectedImageName(asset.fileName || 'photo.jpg');
+        setSelectedImageName(asset.fileName || "photo.jpg");
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to take photo');
+      Alert.alert("Error", "Failed to take photo");
     }
   };
 
   const uploadImage = async () => {
     if (!selectedImage) {
-      Alert.alert('Error', 'Please select an image first');
+      Alert.alert("Error", "Please select an image first");
       return;
     }
 
     try {
       setUploading(true);
-      setLoading(true, 'Uploading photo...');
+      setLoading(true, "Processing photo...");
 
-      const response = await ApiService.uploadImage(selectedImage);
-
-      setSessionId(response.session_id);
+      // Store image locally - no backend upload needed
       setImage(selectedImage, selectedImageName);
 
-      Alert.alert('Success', 'Photo uploaded! 📸', [
-        { text: 'Next', onPress: () => navigation.navigate('WriteDescription') },
+      Alert.alert("Success", "Photo ready! 📸", [
+        {
+          text: "Next",
+          onPress: () => navigation.navigate("WriteDescription"),
+        },
       ]);
     } catch (error) {
-      Alert.alert('Error', error.message || 'Failed to upload image');
+      Alert.alert("Error", error.message || "Failed to process image");
     } finally {
       setUploading(false);
       setLoading(false);
@@ -98,7 +93,10 @@ export default function UploadPhotoScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.content}>
           {/* Instruction */}
           <View style={styles.instructionCard}>
@@ -163,7 +161,7 @@ export default function UploadPhotoScreen({ navigation }) {
           {/* Upload Button */}
           {selectedImage && (
             <PrimaryButton
-              title={uploading ? 'Uploading...' : '⬆️ Upload Photo'}
+              title={uploading ? "Uploading..." : "⬆️ Upload Photo"}
               onPress={uploadImage}
               disabled={uploading}
               loading={uploading}
@@ -174,8 +172,12 @@ export default function UploadPhotoScreen({ navigation }) {
           {/* Info */}
           <View style={styles.infoSection}>
             <Text style={styles.infoTitle}>ℹ️ Tips</Text>
-            <Text style={styles.infoText}>• Use high-quality images for best results</Text>
-            <Text style={styles.infoText}>• Supported formats: JPG, PNG, GIF, WebP</Text>
+            <Text style={styles.infoText}>
+              • Use high-quality images for best results
+            </Text>
+            <Text style={styles.infoText}>
+              • Supported formats: JPG, PNG, GIF, WebP
+            </Text>
             <Text style={styles.infoText}>• Maximum file size: 50MB</Text>
           </View>
         </View>
@@ -189,7 +191,7 @@ export default function UploadPhotoScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: "#f9fafb",
   },
   scrollContent: {
     paddingHorizontal: 16,
@@ -201,11 +203,12 @@ const styles = StyleSheet.create({
 
   // Instruction Card
   instructionCard: {
-    backgroundColor: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
+    backgroundColor:
+      "linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)",
     borderRadius: 12,
     padding: 20,
     marginBottom: 24,
-    alignItems: 'center',
+    alignItems: "center",
   },
   instructionIcon: {
     fontSize: 40,
@@ -213,36 +216,36 @@ const styles = StyleSheet.create({
   },
   instructionTitle: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#111827',
+    fontWeight: "700",
+    color: "#111827",
     marginBottom: 8,
   },
   instructionText: {
     fontSize: 14,
-    color: '#6b7280',
-    textAlign: 'center',
+    color: "#6b7280",
+    textAlign: "center",
   },
 
   // Preview Container
   previewContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginBottom: 24,
     height: 320,
     borderWidth: 2,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
   },
   previewImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   placeholderImage: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f3f4f6',
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f3f4f6",
   },
   placeholderIcon: {
     fontSize: 48,
@@ -250,27 +253,27 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     fontSize: 14,
-    color: '#9ca3af',
+    color: "#9ca3af",
   },
 
   // Image Info
   imageInfo: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#10b981',
+    borderLeftColor: "#10b981",
   },
   imageInfoLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: "#6b7280",
     marginBottom: 4,
   },
   imageInfoValue: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#111827',
+    fontWeight: "600",
+    color: "#111827",
   },
 
   // Button Styles
@@ -278,7 +281,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
   },
   halfButton: {
@@ -295,21 +298,21 @@ const styles = StyleSheet.create({
 
   // Info Section
   infoSection: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 8,
     padding: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#3b82f6',
+    borderLeftColor: "#3b82f6",
   },
   infoTitle: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#111827',
+    fontWeight: "600",
+    color: "#111827",
     marginBottom: 8,
   },
   infoText: {
     fontSize: 13,
-    color: '#6b7280',
+    color: "#6b7280",
     lineHeight: 20,
     marginBottom: 4,
   },

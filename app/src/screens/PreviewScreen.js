@@ -2,7 +2,7 @@
  * Preview Screen
  */
 
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,10 +10,10 @@ import {
   SafeAreaView,
   ScrollView,
   Alert,
-} from 'react-native';
-import { AppContext } from '../context/AppContext';
-import { PrimaryButton, SecondaryButton, LoadingOverlay } from '../components';
-import ApiService from '../services/ApiService';
+} from "react-native";
+import { AppContext } from "../context/AppContext";
+import { PrimaryButton, SecondaryButton, LoadingOverlay } from "../components";
+import ApiService from "../services/ApiService";
 
 export default function PreviewScreen({ navigation }) {
   const {
@@ -25,7 +25,7 @@ export default function PreviewScreen({ navigation }) {
   } = useContext(AppContext);
 
   const [previews, setPreviews] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [localLoading, setLocalLoading] = useState(true);
 
   useEffect(() => {
     generatePreviews();
@@ -33,26 +33,29 @@ export default function PreviewScreen({ navigation }) {
 
   const generatePreviews = async () => {
     try {
-      setLoading(true);
-      setLoading(true, 'Generating preview...');
-
-      const response = await ApiService.previewContent(description);
-      setPreviews(response.previews);
-      setPlatformPreviews(response.previews);
-
-      setLoading(false);
+      // Local preview generation without server call
+      const localPreviews = {};
+      selectedPlatforms.forEach((platform) => {
+        localPreviews[platform] = {
+          text: description,
+          platform: platform,
+        };
+      });
+      setPreviews(localPreviews);
+      setPlatformPreviews(localPreviews);
+      setLocalLoading(false);
     } catch (error) {
-      setLoading(false);
-      Alert.alert('Error', error.message || 'Failed to generate preview');
+      setLocalLoading(false);
+      Alert.alert("Error", error.message || "Failed to generate preview");
       navigation.goBack();
     }
   };
 
   const handlePost = () => {
-    navigation.navigate('Results');
+    navigation.navigate("Results");
   };
 
-  if (loading) {
+  if (localLoading) {
     return (
       <SafeAreaView style={styles.container}>
         <LoadingOverlay visible={true} message="Generating preview..." />
@@ -62,7 +65,10 @@ export default function PreviewScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.content}>
           {/* Instruction */}
           <View style={styles.instructionCard}>
@@ -108,7 +114,10 @@ export default function PreviewScreen({ navigation }) {
 
           {/* Action Buttons */}
           <View style={styles.buttonContainer}>
-            <SecondaryButton title="⬅️ Back" onPress={() => navigation.goBack()} />
+            <SecondaryButton
+              title="⬅️ Back"
+              onPress={() => navigation.goBack()}
+            />
             <PrimaryButton title="🚀 Post Now" onPress={handlePost} />
           </View>
         </View>
@@ -121,24 +130,24 @@ export default function PreviewScreen({ navigation }) {
 
 const PreviewCard = ({ platform, preview }) => {
   const platformIcons = {
-    instagram: '📷',
-    linkedin: '💼',
-    x: '𝕏',
-    threads: '🧵',
+    instagram: "📷",
+    linkedin: "💼",
+    x: "𝕏",
+    threads: "🧵",
   };
 
   const platformNames = {
-    instagram: 'Instagram',
-    linkedin: 'LinkedIn',
-    x: 'X (Twitter)',
-    threads: 'Threads',
+    instagram: "Instagram",
+    linkedin: "LinkedIn",
+    x: "X (Twitter)",
+    threads: "Threads",
   };
 
   const platformColors = {
-    instagram: '#E1306C',
-    linkedin: '#0077B5',
-    x: '#000000',
-    threads: '#000000',
+    instagram: "#E1306C",
+    linkedin: "#0077B5",
+    x: "#000000",
+    threads: "#000000",
   };
 
   return (
@@ -150,10 +159,10 @@ const PreviewCard = ({ platform, preview }) => {
           <Text
             style={[
               styles.previewStatus,
-              { color: preview.fits ? '#10b981' : '#ef4444' },
+              { color: preview.fits ? "#10b981" : "#ef4444" },
             ]}
           >
-            {preview.fits ? '✓ Fits' : '⚠️ Too long'}
+            {preview.fits ? "✓ Fits" : "⚠️ Too long"}
           </Text>
         </View>
       </View>
@@ -181,7 +190,7 @@ const PreviewCard = ({ platform, preview }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: "#f9fafb",
   },
   scrollContent: {
     paddingHorizontal: 16,
@@ -193,11 +202,11 @@ const styles = StyleSheet.create({
 
   // Instruction Card
   instructionCard: {
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+    backgroundColor: "rgba(99, 102, 241, 0.1)",
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   instructionIcon: {
     fontSize: 32,
@@ -205,14 +214,14 @@ const styles = StyleSheet.create({
   },
   instructionTitle: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#111827',
+    fontWeight: "700",
+    color: "#111827",
     marginBottom: 6,
   },
   instructionText: {
     fontSize: 13,
-    color: '#6b7280',
-    textAlign: 'center',
+    color: "#6b7280",
+    textAlign: "center",
   },
 
   // Previews Container
@@ -223,20 +232,20 @@ const styles = StyleSheet.create({
 
   // Preview Card
   previewCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 2,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
   },
 
   previewHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
-    backgroundColor: '#f9fafb',
+    borderBottomColor: "#e5e7eb",
+    backgroundColor: "#f9fafb",
   },
   previewIcon: {
     fontSize: 24,
@@ -247,70 +256,70 @@ const styles = StyleSheet.create({
   },
   previewPlatform: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#111827',
+    fontWeight: "600",
+    color: "#111827",
   },
   previewStatus: {
     fontSize: 12,
     marginTop: 2,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 
   previewContent: {
     padding: 12,
     minHeight: 80,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   previewText: {
     fontSize: 13,
-    color: '#374151',
+    color: "#374151",
     lineHeight: 18,
   },
 
   previewMeta: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: '#f9fafb',
+    backgroundColor: "#f9fafb",
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
+    borderTopColor: "#e5e7eb",
   },
   metaText: {
     fontSize: 12,
-    color: '#6b7280',
-    fontWeight: '500',
+    color: "#6b7280",
+    fontWeight: "500",
   },
   metaWarning: {
     fontSize: 12,
-    color: '#ef4444',
-    fontWeight: '600',
+    color: "#ef4444",
+    fontWeight: "600",
     marginTop: 2,
   },
 
   // Tips Section
   tipsSection: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 8,
     padding: 16,
     marginBottom: 24,
     borderLeftWidth: 4,
-    borderLeftColor: '#f59e0b',
+    borderLeftColor: "#f59e0b",
   },
   tipsTitle: {
     fontSize: 14,
-    fontWeight: '700',
-    color: '#111827',
+    fontWeight: "700",
+    color: "#111827",
     marginBottom: 8,
   },
   tipText: {
     fontSize: 12,
-    color: '#6b7280',
+    color: "#6b7280",
     marginBottom: 6,
     lineHeight: 16,
   },
 
   // Buttons
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
     marginTop: 8,
   },

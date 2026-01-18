@@ -2,7 +2,7 @@
  * App Context - Global state management
  */
 
-import React, { createContext, useState, useCallback } from 'react';
+import React, { createContext, useState, useCallback } from "react";
 
 export const AppContext = createContext();
 
@@ -11,12 +11,12 @@ export const AppProvider = ({ children }) => {
     sessionId: null,
     imageUri: null,
     imageName: null,
-    description: '',
-    selectedPlatforms: ['instagram', 'linkedin', 'x', 'threads'],
+    description: "",
+    selectedPlatforms: ["instagram", "linkedin", "twitter", "threads"],
     platformPreviews: {},
     results: {},
     isLoading: false,
-    loadingText: 'Loading...',
+    loadingText: "Loading...",
   });
 
   const setSessionId = useCallback((sessionId) => {
@@ -43,7 +43,7 @@ export const AppProvider = ({ children }) => {
     setAppState((prev) => ({ ...prev, results }));
   }, []);
 
-  const setLoading = useCallback((isLoading, loadingText = 'Loading...') => {
+  const setLoading = useCallback((isLoading, loadingText = "Loading...") => {
     setAppState((prev) => ({ ...prev, isLoading, loadingText }));
   }, []);
 
@@ -52,12 +52,12 @@ export const AppProvider = ({ children }) => {
       sessionId: null,
       imageUri: null,
       imageName: null,
-      description: '',
-      selectedPlatforms: ['instagram', 'linkedin', 'x', 'threads'],
+      description: "",
+      selectedPlatforms: ["instagram", "linkedin", "twitter", "threads"],
       platformPreviews: {},
       results: {},
       isLoading: false,
-      loadingText: 'Loading...',
+      loadingText: "Loading...",
     });
   }, []);
 
@@ -73,9 +73,5 @@ export const AppProvider = ({ children }) => {
     resetState,
   };
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
