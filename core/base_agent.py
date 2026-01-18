@@ -153,7 +153,7 @@ class BasePlatformAgent(ABC):
             self.logger.debug(f"Running droidrun agent with goal: {goal[:100]}...")
             emit_agent_log(f"🚀 Starting agent with goal: {goal[:80]}...", 'step')
 
-            # Build custom tools for accessing variables
+            # Build custom tools for accessing variable
             tools_to_use = custom_tools or {}
             
             # Add a get_post_text tool if post_text is in variables
